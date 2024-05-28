@@ -3,27 +3,38 @@ async function searchBook() {
   const resultsDiv = document.getElementById("results");
   const loadingSpinner = document.getElementById("loading");
 
+  // Clear previous results and show the loading spinner
   resultsDiv.innerHTML = "";
   loadingSpinner.style.display = "block";
 
-  const response = await fetch(`/search?title=${bookInput}`);
-  const results = await response.json();
+  try {
+    const response = await fetch(
+      `https://www.googleapis.com/books/v1/volumes?q=${bookInput}`
+    );
+    const results = await response.json();
 
-  loadingSpinner.style.display = "none";
+    loadingSpinner.style.display = "none";
 
-  if (results.error) {
-    resultsDiv.innerHTML = `<p>${results.error}</p>`;
-    return;
+    if (!results.items) {
+      resultsDiv.innerHTML = `<p>No results found.</p>`;
+      return;
+    }
+
+    results.items.forEach((item) => {
+      const book = item.volumeInfo;
+      const bookElement = document.createElement("div");
+      bookElement.classList.add("book-item");
+      bookElement.innerHTML = `
+              <h3>${book.title}</h3>
+              <p>Author: ${
+                book.authors ? book.authors.join(", ") : "Unknown"
+              }</p>
+              <a href="${book.infoLink}" target="_blank">More info</a>
+          `;
+      resultsDiv.appendChild(bookElement);
+    });
+  } catch (error) {
+    loadingSpinner.style.display = "none";
+    resultsDiv.innerHTML = `<p>Error fetching data. Please try again later.</p>`;
   }
-
-  results.books.forEach((book) => {
-    const bookElement = document.createElement("div");
-    bookElement.classList.add("book-item");
-    bookElement.innerHTML = `
-            <h3>${book.title}</h3>
-            <p>Author: ${book.author}</p>
-            <a href="${book.link}" target="_blank">Buy this book</a>
-        `;
-    resultsDiv.appendChild(bookElement);
-  });
 }
