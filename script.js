@@ -38,3 +38,19 @@ async function searchBook() {
     resultsDiv.innerHTML = `<p>Error fetching data. Please try again later.</p>`;
   }
 }
+// Existing JavaScript code...
+
+// Function to handle searching
+async function searchBook() {
+  const bookInput = document.getElementById("bookInput").value;
+  // Rest of the code remains the same...
+}
+
+// Add event listener to input field
+document
+  .getElementById("bookInput")
+  .addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+      searchBook();
+    }
+  });

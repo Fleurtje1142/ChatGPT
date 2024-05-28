@@ -82,17 +82,19 @@ button:hover {
 
 .book-item h3 {
     margin: 0;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .book-item p {
     margin: 5px 0;
     color: #ccc;
+    font-size: 14px;
 }
 
 .book-item a {
     color: #007BFF;
     text-decoration: none;
+    font-size: 14px;
 }
 
 .book-item a:hover {
