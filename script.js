@@ -1,3 +1,4 @@
+// Function to handle searching
 async function searchBook() {
   const bookInput = document.getElementById("bookInput").value;
   const resultsDiv = document.getElementById("results");
@@ -38,15 +39,8 @@ async function searchBook() {
     resultsDiv.innerHTML = `<p>Error fetching data. Please try again later.</p>`;
   }
 }
-// Existing JavaScript code...
 
-// Function to handle searching
-async function searchBook() {
-  const bookInput = document.getElementById("bookInput").value;
-  // Rest of the code remains the same...
-}
-
-// Add event listener to input field
+// Add event listener to input field to handle Enter key press
 document
   .getElementById("bookInput")
   .addEventListener("keypress", function (event) {

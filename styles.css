@@ -13,16 +13,17 @@ body {
 .container {
     text-align: center;
     background: rgba(0, 0, 0, 0.7);
-    padding: 40px;
+    padding: 30px; /* Increased padding */
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 600px;
+    width: 95%; /* Increased width */
+    max-width: 700px; /* Increased max width */
 }
 
 h1 {
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Increased margin */
     color: #fff;
+    font-size: 28px; /* Increased font size */
 }
 
 .search-box {
@@ -32,22 +33,22 @@ h1 {
 }
 
 input {
-    padding: 10px;
-    margin: 10px 0;
-    width: 80%;
+    padding: 12px; /* Increased padding */
+    margin: 10px 0; /* Increased margin */
+    width: 80%; /* Increased width */
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 16px;
+    font-size: 18px; /* Increased font size */
 }
 
 button {
-    padding: 10px 20px;
+    padding: 12px 24px; /* Increased padding */
     border: none;
     background: #007BFF;
     color: white;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px; /* Increased font size */
 }
 
 button:hover {
@@ -55,19 +56,21 @@ button:hover {
 }
 
 #results {
-    margin-top: 20px;
+    margin-top: 20px; /* Reduced margin */
     text-align: left;
+    max-height: 300px; /* Set max height for results */
+    overflow-y: auto; /* Allow vertical scrolling */
 }
 
 .loading-spinner {
     display: none;
-    border: 8px solid #f3f3f3;
-    border-top: 8px solid #007BFF;
+    border: 6px solid #f3f3f3; /* Reduced size */
+    border-top: 6px solid #007BFF; /* Reduced size */
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 30px; /* Reduced size */
+    height: 30px; /* Reduced size */
     animation: spin 1s linear infinite;
-    margin: 20px auto;
+    margin: 10px auto; /* Reduced margin */
 }
 
 @keyframes spin {
@@ -77,24 +80,25 @@ button:hover {
 
 .book-item {
     border-bottom: 1px solid #ddd;
-    padding: 10px 0;
+    padding: 5px 0; /* Reduced padding */
+    margin: 5px 0; /* Added margin to reduce the overall height */
 }
 
 .book-item h3 {
     margin: 0;
-    font-size: 16px;
+    font-size: 16px; /* Increased font size */
 }
 
 .book-item p {
     margin: 5px 0;
     color: #ccc;
-    font-size: 14px;
+    font-size: 14px; /* Increased font size */
 }
 
 .book-item a {
     color: #007BFF;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 14px; /* Increased font size */
 }
 
 .book-item a:hover {
