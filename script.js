@@ -1,50 +1,105 @@
-// Function to handle searching
-async function searchBook() {
-  const bookInput = document.getElementById("bookInput").value;
-  const resultsDiv = document.getElementById("results");
-  const loadingSpinner = document.getElementById("loading");
+const API_KEY = "YOUR_API_KEY"; // Replace 'YOUR_API_KEY' with your actual Google API key
 
-  // Clear previous results and show the loading spinner
-  resultsDiv.innerHTML = "";
-  loadingSpinner.style.display = "block";
+// Cart functionality
+const cart = [];
 
-  try {
-    const response = await fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=${bookInput}`
-    );
-    const results = await response.json();
-
-    loadingSpinner.style.display = "none";
-
-    if (!results.items) {
-      resultsDiv.innerHTML = `<p>No results found.</p>`;
-      return;
-    }
-
-    results.items.forEach((item) => {
-      const book = item.volumeInfo;
-      const bookElement = document.createElement("div");
-      bookElement.classList.add("book-item");
-      bookElement.innerHTML = `
-              <h3>${book.title}</h3>
-              <p>Author: ${
-                book.authors ? book.authors.join(", ") : "Unknown"
-              }</p>
-              <a href="${book.infoLink}" target="_blank">More info</a>
-          `;
-      resultsDiv.appendChild(bookElement);
-    });
-  } catch (error) {
-    loadingSpinner.style.display = "none";
-    resultsDiv.innerHTML = `<p>Error fetching data. Please try again later.</p>`;
-  }
-}
-
-// Add event listener to input field to handle Enter key press
 document
-  .getElementById("bookInput")
-  .addEventListener("keypress", function (event) {
+  .getElementById("searchButton")
+  .addEventListener("click", performSearch);
+document
+  .getElementById("searchInput")
+  .addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
-      searchBook();
+      performSearch();
     }
   });
+
+document.getElementById("clearCartButton").addEventListener("click", clearCart);
+
+function performSearch() {
+  const query = document.getElementById("searchInput").value;
+  if (!query) return;
+
+  document.querySelector(".loading-spinner").style.display = "block";
+  document.getElementById("results").innerHTML = "";
+
+  fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&key=${API_KEY}`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.items) {
+        const books = data.items.map((item) => {
+          const volumeInfo = item.volumeInfo;
+          return {
+            title: volumeInfo.title || "No Title",
+            description: volumeInfo.description || "No Description",
+            price:
+              volumeInfo.saleInfo && volumeInfo.saleInfo.retailPrice
+                ? `$${volumeInfo.saleInfo.retailPrice.amount}`
+                : "Price not available",
+            link: volumeInfo.infoLink,
+            image: volumeInfo.imageLinks
+              ? volumeInfo.imageLinks.thumbnail
+              : "https://via.placeholder.com/150", // Use a placeholder image if thumbnail is not available
+          };
+        });
+        displayResults(books);
+      } else {
+        document.getElementById("results").innerHTML =
+          "<p>No results found</p>";
+      }
+      document.querySelector(".loading-spinner").style.display = "none";
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+      document.querySelector(".loading-spinner").style.display = "none";
+    });
+}
+
+function displayResults(results) {
+  const resultsContainer = document.getElementById("results");
+  resultsContainer.innerHTML = "";
+
+  results.forEach((book) => {
+    const bookItem = document.createElement("div");
+    bookItem.className = "book-item";
+    bookItem.innerHTML = `
+            <img src="${book.image}" alt="${book.title}" style="width: 100px; height: auto; float: left; margin-right: 10px;">
+            <div style="overflow: hidden;">
+                <h3>${book.title}</h3>
+                <p>${book.description}</p>
+                <p><strong>Price: ${book.price}</strong></p>
+                <button class="addToCartButton" data-title="${book.title}" data-price="${book.price}">Add to Cart</button>
+                <a href="${book.link}" target="_blank">Buy this book</a>
+            </div>
+            <div style="clear: both;"></div>
+        `;
+    resultsContainer.appendChild(bookItem);
+  });
+
+  // Add event listeners to "Add to Cart" buttons
+  document.querySelectorAll(".addToCartButton").forEach((button) => {
+    button.addEventListener("click", addToCart);
+  });
+}
+
+function addToCart(event) {
+  const title = event.target.dataset.title;
+  const price = event.target.dataset.price;
+  cart.push({ title, price });
+  updateCartDisplay();
+}
+
+function updateCartDisplay() {
+  const cartItemsElement = document.getElementById("cartItems");
+  cartItemsElement.innerHTML = "";
+  cart.forEach((item) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = `${item.title} - ${item.price}`;
+    cartItemsElement.appendChild(listItem);
+  });
+}
+
+function clearCart() {
+  cart.length = 0;
+  updateCartDisplay();
+}
