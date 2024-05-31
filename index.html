@@ -3,27 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Book Search</title>
+    <title>Book Finder</title>
     <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="container">
-      <h1>Book Search</h1>
+      <h1>Book Finder</h1>
       <div class="search-box">
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Enter a book title..."
-        />
-        <button id="searchButton">Search</button>
+        <input type="text" id="bookInput" placeholder="Enter book title" />
+        <button onclick="searchBook()">Search</button>
       </div>
-      <div id="results" class="results-container"></div>
-      <div class="loading-spinner"></div>
-      <div id="cart" class="cart-container">
-        <h2>Shopping Cart</h2>
-        <ul id="cartItems"></ul>
-        <button id="clearCartButton">Clear Cart</button>
-      </div>
+      <div id="loading" class="loading-spinner"></div>
+      <div id="results"></div>
     </div>
 
     <script src="script.js"></script>
